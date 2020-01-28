@@ -10,30 +10,30 @@ import (
 	"time"
 )
 
-type StockHandler struct {
+type BidHandler struct {
 	tmpl *template.Template
-	stockServ stock.StockService
+	bidSer stock.BidService
 	//csrfSignKey []byte
 }
 
 
 //
-func NewStockHandler(t *template.Template , stockServ stock.StockService) *StockHandler {
-	return &StockHandler{tmpl:t,stockServ:stockServ}
+func NewBidHandler(t *template.Template , bidServ stock.BidService) *BidHandler {
+	return &BidHandler{bidSer:bidServ}
 }
 
-func  (ach *StockHandler) Stocks(w http.ResponseWriter, r *http.Request){
-	stks,errs := ach.stockServ.Stocks()
+func  (ach *BidHandler) listBids(w http.ResponseWriter, r *http.Request){
+	bids,errs := ach.bidSer.Bids()
 
 	if len(errs) > 0  {
 		http.Error(w, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 	}
-	fmt.Println(stks)
-	ach.tmpl.ExecuteTemplate(w, "stocks.layout", stks)
+	fmt.Println(bids)
+	ach.tmpl.ExecuteTemplate(w, "stocks.layout", bids)
 }
 
 
-func  (ach *StockHandler) StockNew(w http.ResponseWriter, r *http.Request) {
+func  (ach *StockHandler) bidNew(w http.ResponseWriter, r *http.Request) {
 
 	if r.Method == http.MethodPost {
 

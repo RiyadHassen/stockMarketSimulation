@@ -1,0 +1,35 @@
+{{ define "categ.new.layout"}}
+    {{template "navbar"}}
+    {{template "categ.new.content"}}
+    {{template "footer"}}
+{{end}}
+
+{{define "categ.new.content"}}
+    <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+            <h2>Add New Categories</h2>
+        </div>
+        <div class="container">
+            <form method="POST" action="/categories/new" >
+                <input type="hidden" name="_csrf" id="_csrf" value="{{ .CSRF }}" />
+                <div class="form-group row">
+                    <label for="catname" class="col-sm-2 col-form-label">Category Name</label>
+                    {{with .VErrors.Get "catname"}}
+                        <label class="col-sm-2 col-form-label text-danger">{{.}}</label>
+                    {{end}}
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" name="catname" id="catname" value='{{ .Values.Get "catname" }}'
+                               placeholder="Category Name">
+                    </div>
+
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-sm-10">
+                        <button type="submit" class="btn btn-primary float-right">Add Category</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+{{end}}

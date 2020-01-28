@@ -2,6 +2,7 @@ package repository
 
 import (
 	"FinalDSP/model"
+	"fmt"
 	"github.com/jinzhu/gorm"
 )
 
@@ -16,6 +17,7 @@ func NewCategoryDb(db *gorm.DB) *CategoryDb {
 func (caty *CategoryDb) Categories() ([]model.Category,[]error) {
 	categories := []model.Category{}
 	errs := caty.conn.Find(&categories).GetErrors()
+	fmt.Println("from databasee",categories)
 	if len(errs) > 0 {
 		return nil,errs
 	}

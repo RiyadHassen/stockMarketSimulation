@@ -7,50 +7,53 @@ import (
 type Role struct {
 	ID uint
 	Name string
-	Users []User
+	Users []User `gorm:"many2many:role_user"`
 }
 
 
 type  User struct {
 	ID uint
-	userName string `gorm:"type:varchar(255);not null"`
-	phoneNo string `gorm:"type:varchar(255);not null"`
-	password string `gorm:"type: varchar(255)"`
-	email string `gorm:"type:varchar(255);not null; unique"`
-	tin_no string `gorm:"type:varchar(255);not null; unique"`
-	Bids []Bid
-
-
+	UserName string `gorm:"type:varchar(255);not null"`
+	PhoneNo string `gorm:"type:varchar(255);not null"`
+	Password string `gorm:"type: varchar(255)"`
+	Email string `gorm:"type:varchar(255);not null; unique"`
+	TinNo string `gorm:"type:varchar(255);not null; unique"`
+	Bid []Bid `gorm:"many2many:users_bid"`
+//
 }
+
+
 type Session struct {
 	ID uint
 	UUID string `gorm:"type:varchar(255); not null"`
 	Expires int64 `gorm:"type:varchar(255); not null"`
 	SigninKey []byte `gorm:"type:varchar(255); not null"`
 }
+
+
 type Stock struct {
 	ID uint
-	name string `gorm:"type:varchar(255);not null"`
-	desc string  `gorm:"type:varchar(255)`
-	turnoff bool
-	min_value float64
-	max_value float64
-	start_time time.Time
-	end_time time.Time
-	CategoryID uint
-
+	Name string `gorm:"type:varchar(255);not null"`
+	Desc string  `gorm:"type:varchar(255)`
+	Turnoff bool
+	MinValue float64
+	MaxValue float64
+	StartTime time.Time
 }
+
+
 type Category struct {
 	ID uint
-	name string
-	Stocks []Stock
+	Name string
+	Stock []Stock  `gorm:"many2many:stock_category"`
 }
+
+
 type Bid struct {
 	ID uint
-	name string
-	price string
-	status bool
+	Name string
+	Price string
+	Status bool
 	StockID uint
-	UserID uint
-	sent_time time.Time
+	SentTime time.Time
 }
