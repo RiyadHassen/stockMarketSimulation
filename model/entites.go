@@ -18,7 +18,7 @@ type  User struct {
 	Password string `gorm:"type: varchar(255)"`
 	Email string `gorm:"type:varchar(255);not null; unique"`
 	TinNo string `gorm:"type:varchar(255);not null; unique"`
-	Bid []Bid `gorm:"many2many:users_bid"`
+	Bid []BidDb `gorm:"many2many:users_bid"`
 //
 }
 
@@ -49,10 +49,10 @@ type Category struct {
 }
 
 
-type Bid struct {
+type BidDb struct {
 	ID uint
 	Name string
-	Price string
+	Price float64
 	Status bool
 	StockID uint
 	SentTime time.Time

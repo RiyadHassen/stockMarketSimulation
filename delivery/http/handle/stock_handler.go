@@ -63,9 +63,18 @@ func  (ach *StockHandler) StockNew(w http.ResponseWriter, r *http.Request) {
 		http.Redirect(w, r, "/stocks",  http.StatusSeeOther)
 
 	} else {
-
 		ach.tmpl.ExecuteTemplate(w, "stock.new.layout", nil)
 	}
 }
-
+func (handler *StockHandler) Index(writer http.ResponseWriter,r *http.Request)  {
+	if r.URL.Path !="/"{
+		http.NotFound(writer,r)
+		return
+	}
+	stks,errs := handler.stockServ.Stocks()
+	if len(errs) > 0 {
+		http.Error(writer,http.StatusText(http.StatusInternalServerError),http.StatusInternalServerError)
+	}
+	handler.tmpl.ExecuteTemplate(writer,"index.layout",stks)
+}
 

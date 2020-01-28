@@ -1,0 +1,30 @@
+{{ define "usr.bid.layout"}}
+    {{template "navbar"}}
+    {{template "bids.content.layout" .}}
+    {{template "footer"}}
+{{end}}
+
+{{define "bids.content.layout"}}
+
+    <div class="card-deck" >
+
+        {{range .}}
+            <div class="card" style="width: 18rem;">
+                <div class="card-header">
+                    {{ .Name }}
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">{{.Price}}</li>
+                    <li class="list-group-item">{{.SentTime}}</li>
+                    {{if .Status}}
+                    <li class="list-group-item"> Accepted</li>
+                        {{else}}
+                        <li class="list-group-item">Not Accepted</li>
+                        {{end}}
+                </ul>
+            </div>
+        {{end}}
+    </div>
+
+
+{{end}}

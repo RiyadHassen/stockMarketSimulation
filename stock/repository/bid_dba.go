@@ -14,10 +14,10 @@ func NewBidDb(db *gorm.DB) *BidDb {
 	return &BidDb{db}
 }
 
-func (bid *BidDb) Bids() ([]model.Bid,[]error) {
+func (bid *BidDb) Bids() ([]model.BidDb,[]error) {
 
-	bids := []model.Bid{}
-	errs := bid.conn.Find(&bid).GetErrors()
+	bids := []model.BidDb{}
+	errs := bid.conn.Find(&bids).GetErrors()
 	fmt.Println("from databasee",bids)
 	if len(errs) > 0 {
 		return nil,errs
@@ -26,9 +26,9 @@ func (bid *BidDb) Bids() ([]model.Bid,[]error) {
 }
 
 
-func (bid *BidDb) Bid(Id uint)(*model.Bid,[]error) {
+func (bid *BidDb) Bid(Id uint)(*model.BidDb,[]error) {
 
-	oneBid := model.Bid{}
+	oneBid := model.BidDb{}
 	errs := bid.conn.First(&oneBid,Id).GetErrors()
 	if len(errs) > 0 {
 		return nil, errs
@@ -36,7 +36,7 @@ func (bid *BidDb) Bid(Id uint)(*model.Bid,[]error) {
 	return &oneBid,errs
 }
 
-func  (bid *BidDb) UpdateBid(ubid *model.Bid)(*model.Bid,[]error){
+func  (bid *BidDb) UpdateBid(ubid *model.BidDb)(*model.BidDb,[]error){
 	onebid := ubid
 	errs := bid.conn.Save(onebid).GetErrors()
 	if len(errs) > 0 {
@@ -45,7 +45,7 @@ func  (bid *BidDb) UpdateBid(ubid *model.Bid)(*model.Bid,[]error){
 	return onebid,errs
 }
 
-func (bid *BidDb)  DeleteBid(Id uint)(*model.Bid,[]error)  {
+func (bid *BidDb)  DeleteBid(Id uint)(*model.BidDb,[]error)  {
 	oneBid,errs := bid.Bid(Id)
 
 	if len(errs) > 0 {
@@ -59,7 +59,7 @@ func (bid *BidDb)  DeleteBid(Id uint)(*model.Bid,[]error)  {
 	return oneBid,errs
 }
 
-func (bid *BidDb) SaveBid(oneBid *model.Bid)(*model.Bid,[]error) {
+func (bid *BidDb) SaveBid(oneBid *model.BidDb)(*model.BidDb,[]error) {
 	cat := oneBid
 	errs := bid.conn.Create(cat).GetErrors()
 	if len(errs) > 0  {

@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-// AdminCategoryHandler handles category handler admin requests
+// ategoryHandler handles category handler admin requests
 type CategoryHandler struct {
 	tmpl        *template.Template
 	categoryServ stock.CategoryService
@@ -53,15 +53,4 @@ func  (ach *CategoryHandler) CategoriesNew(w http.ResponseWriter, r *http.Reques
 	}
 }
 
-func (handler *CategoryHandler) Index(writer http.ResponseWriter,r *http.Request)  {
-	if r.URL.Path !="/"{
-		http.NotFound(writer,r)
-		return
-	}
-	categories,errs := handler.categoryServ.Categories()
-	if len(errs) > 0 {
-		http.Error(writer,http.StatusText(http.StatusInternalServerError),http.StatusInternalServerError)
-	}
 
-	handler.tmpl.ExecuteTemplate(writer,"index.layout",categories)
-}

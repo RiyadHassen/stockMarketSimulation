@@ -21,8 +21,8 @@ func index(writer http.ResponseWriter, request *http.Request)  {
 func createTables(dbconn *gorm.DB) []error {
 
 	dbconn.SingularTable(true)
-	dbconn.DropTableIfExists(&model.Stock{},&model.Category{},model.Bid{},model.User{},model.Role{},model.Session{})
-	errs := dbconn.CreateTable(&model.Stock{},&model.Category{},model.Bid{},model.User{},model.Role{},model.Session{}).GetErrors()
+	dbconn.DropTableIfExists(&model.Stock{},&model.Category{},model.BidDb{},model.User{},model.Role{},model.Session{})
+	errs := dbconn.CreateTable(&model.Stock{},&model.Category{},model.BidDb{},model.User{},model.Role{},model.Session{}).GetErrors()
 	if errs != nil{
 		return errs
 	}
@@ -58,13 +58,22 @@ func main()  {
 
 	categoryService := service.NewCategoryService(categoryRepo)
 
+	bidRepo := repository.NewBidDb(dbconn)
+
+	bidServ := service.NewBidService(bidRepo)
+
+	bh := handle.NewUserBidHandler(tmpl,bidServ)
+
+
 	ch := handle.NewCategoryHandler(tmpl,categoryService)
 
 	sh := handle.NewStockHandler(tmpl,stockServ)
 
 	fs := http.FileServer(http.Dir("../FinalDSP/ui/web/assets"))
 	http.Handle("/assets/",http.StripPrefix("/assets/",fs))
-	http.HandleFunc("/",ch.Index)
+	http.HandleFunc("/",sh.Index)
+	http.HandleFunc("/bids", bh.UserBids )
+	http.HandleFunc("/bids/new", bh.NewBid )
 	http.HandleFunc("/categories",ch.Categories)
 	http.HandleFunc("/categories/new",ch.CategoriesNew)
 	http.HandleFunc("/stocks/new",sh.StockNew)
